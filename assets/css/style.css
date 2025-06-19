@@ -144,7 +144,7 @@
 }
 
 :root {
-  --primary-gradient: linear-gradient(135deg, #1e3c72, #2a5298);
+  --primary-gradient: linear-gradient(135deg, #1e3c72, #2a5298); /* Default dark theme */
   --text-color: #fff;
   --highlight-color: #ffc107;
   --font-family: "Montserrat", sans-serif;
@@ -162,6 +162,15 @@ body {
   color: var(--text-color);
   text-align: center;
   position: relative;
+}
+
+/* Thème clair */
+@media (prefers-color-scheme: light) {
+  :root {
+    --primary-gradient: linear-gradient(135deg, #f0f2f5, #d9e2ec); /* Light theme gradient */
+    --text-color: #333;
+    --highlight-color: #1e3c72; /* Blue for light theme */
+  }
 }
 
 .logo {
