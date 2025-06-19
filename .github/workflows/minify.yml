@@ -1,0 +1,71 @@
+name: 🚀 Deploy website on push
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  web-deploy:
+    name: 🎉 Minify & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+
+      - name: 🛠️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Install minifiers
+        run: |
+          npm install -g html-minifier-terser clean-css-cli terser svgo
+
+      - name: 🧹 Clean and prepare dist folder
+        run: |
+          rm -rf dist
+          mkdir -p dist/assets/css
+          mkdir -p dist/assets/js
+          mkdir -p dist/assets/img
+          mkdir -p dist/assets/fonts
+
+      - name: ✨ Minify HTML
+        run: |
+          html-minifier-terser index.html -o dist/index.html \
+            --collapse-whitespace --remove-comments --minify-css true --minify-js true
+
+      - name: ✨ Minify CSS
+        run: |
+          cleancss -o dist/assets/css/style.css assets/css/style.css
+
+      - name: ✨ Minify JS
+        run: |
+          terser assets/js/register-sw.js -o dist/assets/js/register-sw.js --compress --mangle
+
+      - name: ✨ Minify JSON
+        run: |
+          jq -c . < manifest.json > dist/manifest.json
+
+      - name: ✨ Minify SVG
+        run: |
+          for svg in assets/img/*.svg; do
+            svgo "$svg" -o "dist/$svg"
+          done
+
+      - name: 📥 Copy other files
+        run: |
+          cp robots.txt dist/
+          cp .user.ini dist/
+          cp .htaccess dist/ || true
+          cp .infomaniak-maintenance.html dist/ || true
+          cp -r assets/fonts dist/assets/
+
+      - name: 📂 Sync files via FTP
+        uses: webitsbr/github-to-ftp@1.0.1
+        with:
+          server: ${{ secrets.SERVER }}
+          server-dir: ${{ secrets.DIR }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          local-dir: dist

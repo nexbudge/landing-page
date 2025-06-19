@@ -1,0 +1,14 @@
+# robots.txt pour nexbudge.com
+
+# Bloquer tous les fichiers sensibles
+User-agent: *
+Disallow: /assets/
+Disallow: /admin/
+Disallow: /cgi-bin/
+Disallow: /*.php$
+Disallow: /*.ini$
+Disallow: /*.log$
+Disallow: /*.zip$
+
+# Autoriser tout le reste
+Allow: /
