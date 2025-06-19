@@ -183,6 +183,37 @@ body {
   display: block;
 }
 
+/* Par défaut, cacher les logos */
+.logo.light-theme {
+  display: none;
+}
+
+.logo.dark-theme {
+  display: none;
+}
+
+/* Afficher le logo clair pour le thème clair */
+@media (prefers-color-scheme: light) {
+  .logo.light-theme {
+    display: block;
+  }
+
+  .logo.dark-theme {
+    display: none;
+  }
+}
+
+/* Afficher le logo sombre pour le thème sombre */
+@media (prefers-color-scheme: dark) {
+  .logo.light-theme {
+    display: none;
+  }
+
+  .logo.dark-theme {
+    display: block;
+  }
+}
+
 .container {
   max-width: 600px;
   padding: 20px;
