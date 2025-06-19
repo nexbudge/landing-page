@@ -11,17 +11,22 @@
     "lang": "fr",
     "icons": [
         {
-            "src": "assets/img/logo-nexbudge-blue.png",
-            "sizes": "512x512",
-            "type": "image/png"
+            "src": "assets/img/logo-nexbudge-white.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
         },
         {
-            "src": "assets/img/logo-nexbudge-blue-transparent.png",
-            "sizes": "512x512",
-            "type": "image/png"
+            "src": "assets/img/logo-nexbudge-white-no-text.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
         },
         {
             "src": "assets/img/logo-nexbudge-blue.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "assets/img/logo-nexbudge-blue-no-text.svg",
             "sizes": "any",
             "type": "image/svg+xml"
         }
