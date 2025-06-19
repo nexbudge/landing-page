@@ -155,7 +155,7 @@ footer {
   }
 
   .logo {
-    width: 150px;
+    width: 250px;
     margin-bottom: 10px;
   }
 
@@ -164,6 +164,15 @@ footer {
   }
 
   p {
+    font-size: 0.9rem;
+  }
+
+  .description {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+
+  .info {
     font-size: 0.9rem;
   }
 }
