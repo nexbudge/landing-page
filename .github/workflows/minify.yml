@@ -61,7 +61,6 @@ jobs:
           cp .htaccess dist/ || true
           cp .infomaniak-maintenance.html dist/ || true
           cp -r assets/fonts dist/assets/
-          cp service-worker.js dist/
 
       - name: 📂 Sync files via FTP
         uses: webitsbr/github-to-ftp@1.0.1
