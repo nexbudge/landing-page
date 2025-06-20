@@ -203,11 +203,11 @@ footer {
   }
 
   .light-theme {
-    display: block; /* Afficher le logo clair */
+    display: block;
   }
 
   .dark-theme {
-    display: none; /* Masquer le logo sombre */
+    display: none;
   }
 }
 
@@ -227,14 +227,14 @@ footer {
   }
 
   .light-theme {
-    display: block; /* Afficher le logo clair */
+    display: block;
   }
 
   .dark-theme {
-    display: none; /* Masquer le logo sombre */
+    display: none;
   }
 
   footer {
-    display: none; /* Masquer le pied de page lors de l'impression */
+    display: none;
   }
 }
