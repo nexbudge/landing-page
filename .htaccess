@@ -44,12 +44,18 @@
 </IfModule>
 
 # -------------------------------
-# 🔁 Redirection vers HTTPS
+# 🔁 Redirection vers HTTPS et vers nexbudge.com
 # -------------------------------
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # ✅ Rediriger HTTP vers HTTPS
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # ✅ Rediriger tout domaine ≠ nexbudge.com vers nexbudge.com
+  RewriteCond %{HTTP_HOST} !^nexbudge\.com$ [NC]
+  RewriteRule ^(.*)$ https://nexbudge.com/$1 [R=301,L]
 </IfModule>
 
 # -------------------------------
