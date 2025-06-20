@@ -28,6 +28,7 @@ jobs:
           mkdir -p dist/assets/css
           mkdir -p dist/assets/js
           mkdir -p dist/assets/img
+          mkdir -p dist/assets/img/favicon
           mkdir -p dist/assets/fonts
 
       - name: ✨ Minify HTML
