@@ -193,11 +193,11 @@ footer {
   }
 
   .light-theme {
-    display: block; /* Afficher le logo clair */
+    display: none; /* Masquer le logo clair */
   }
 
   .dark-theme {
-    display: none; /* Masquer le logo sombre */
+    display: block; /* Afficher le logo sombre */
   }
 }
 
