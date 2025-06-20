@@ -61,20 +61,30 @@ body {
   margin-bottom: 20px;
 }
 
-.light-theme {
-  display: block;
-}
-
-.dark-theme {
+.logo-dark {
   display: none;
 }
 
+.logo-light {
+  display: block;
+}
+
 @media (prefers-color-scheme: dark) {
-  .light-theme {
+  .logo-dark {
+    display: block;
+  }
+
+  .logo-light {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .logo-dark {
     display: none;
   }
 
-  .dark-theme {
+  .logo-light {
     display: block;
   }
 }
@@ -193,11 +203,11 @@ footer {
   }
 
   .light-theme {
-    display: none; /* Masquer le logo clair */
+    display: block; /* Afficher le logo clair */
   }
 
   .dark-theme {
-    display: block; /* Afficher le logo sombre */
+    display: none; /* Masquer le logo sombre */
   }
 }
 
