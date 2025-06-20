@@ -46,11 +46,11 @@ jobs:
 
       - name: ✨ Minify JSON
         run: |
-          jq -c . < manifest.json > dist/manifest.json
+          jq -c . < assets/img/favicon/site.webmanifest > dist/assets/img/favicon/site.webmanifest
 
       - name: ✨ Minify SVG
         run: |
-          for svg in assets/img/*.svg; do
+          for svg in assets/img/*.svg assets/img/favicon/*.svg; do
             svgo "$svg" -o "dist/$svg"
           done
 
