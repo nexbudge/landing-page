@@ -28,7 +28,6 @@ jobs:
           mkdir -p dist/assets/css
           mkdir -p dist/assets/js
           mkdir -p dist/assets/img
-          mkdir -p dist/assets/img/favicon
           mkdir -p dist/assets/fonts
 
       - name: ✨ Minify HTML
@@ -47,11 +46,11 @@ jobs:
 
       - name: ✨ Minify JSON
         run: |
-          jq -c . < assets/img/favicon/site.webmanifest > dist/assets/img/favicon/site.webmanifest
+          jq -c . < manifest.json > dist/manifest.json
 
       - name: ✨ Minify SVG
         run: |
-          for svg in assets/img/*.svg assets/img/favicon/*.svg; do
+          for svg in assets/img/*.svg; do
             svgo "$svg" -o "dist/$svg"
           done
 
