@@ -33,6 +33,8 @@
   --text-color: #fff;
   --highlight-color: #ffc107;
   --font-family: "Montserrat", sans-serif;
+  --base-font-size: 16px;
+  --logo-size: 350px;
 }
 
 /* ------------------------------
@@ -41,6 +43,7 @@
 body {
   margin: 0;
   font-family: var(--font-family);
+  font-size: var(--base-font-size);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,7 +58,7 @@ body {
    Logo
 ------------------------------ */
 .logo {
-  width: 350px;
+  width: var(--logo-size);
   max-width: 80vw;
   height: auto;
   margin-bottom: 20px;
@@ -251,4 +254,45 @@ footer a:hover {
   footer {
     display: none;
   }
+}
+
+/* ------------------------------
+   Adaptive styles via Obs.js
+------------------------------ */
+/* Network and frugality signals */
+:root.has-delivery-mode-lite {
+  /* Be lightweight: smaller base size and logo */
+  --base-font-size: 15px;
+  --logo-size: 240px;
+}
+
+:root.has-conservation-preference-conserve {
+  /* Prefer solid background to reduce paint cost */
+  --primary-gradient: #1e3c72;
+}
+
+:root.has-data-saver,
+:root.has-bandwidth-low,
+:root.has-latency-high {
+  /* Be extra cautious when bandwidth is low or latency high */
+  --logo-size: 220px;
+}
+
+/* Device capability signals */
+:root.has-ram-very-low,
+:root.has-ram-low {
+  /* Avoid webfonts on constrained devices */
+  --font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Reduce motion on constrained CPU or lite mode */
+html.has-cpu-low *,
+html.has-delivery-mode-lite * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Battery-aware tweaks */
+html.has-battery-critical footer {
+  opacity: 0.6;
 }
