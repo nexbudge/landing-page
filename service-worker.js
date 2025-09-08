@@ -50,6 +50,12 @@ self.addEventListener("message", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
 
+  // Only cache GET requests. HEAD/POST/etc. should bypass caching to avoid errors.
+  if (req.method !== "GET") {
+    event.respondWith(fetch(req));
+    return;
+  }
+
   // Network-first for navigations/HTML to always pick up new content quickly
   const accept = req.headers.get("accept") || "";
   const isHTML = req.mode === "navigate" || accept.includes("text/html");
@@ -59,6 +65,7 @@ self.addEventListener("fetch", (event) => {
         try {
           const fresh = await fetch(req, { cache: "no-store" });
           const cache = await caches.open(CACHE_NAME);
+          // Safe to cache: navigation requests are GET
           cache.put(req, fresh.clone());
           return fresh;
         } catch (err) {
@@ -85,7 +92,7 @@ self.addEventListener("fetch", (event) => {
         fetch(req)
           .then((res) => {
             if (res && res.ok) {
-              caches.open(CACHE_NAME).then((c) => c.put(req, res));
+              caches.open(CACHE_NAME).then((c) => c.put(req, res.clone()));
             }
           })
           .catch(() => {});
