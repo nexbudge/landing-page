@@ -1,14 +1,10 @@
-# robots.txt pour nexbudge.com
-
-# Bloquer tous les fichiers sensibles
 User-agent: *
-Disallow: /assets/
-Disallow: /admin/
-Disallow: /cgi-bin/
-Disallow: /*.php$
-Disallow: /*.ini$
-Disallow: /*.log$
-Disallow: /*.zip$
+Disallow: 
 
-# Autoriser tout le reste
-Allow: /
+Disallow: /cgi-bin/
+Disallow: /errors/
+Disallow: /admin/
+Disallow: /assets/css/errors/
+Disallow: /.infomaniak-maintenance.html
+
+Sitemap: https://nexbudge.com/sitemap.xml
