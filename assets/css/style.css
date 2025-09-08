@@ -105,7 +105,12 @@ body {
    Titres et textes
 ------------------------------ */
 h1 {
-  font-size: 2.8rem;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
@@ -162,7 +167,11 @@ footer a:hover {
   }
 
   h1 {
-    font-size: 1.7rem;
+    font-size: 1.3rem !important;
+  }
+
+  h2 {
+    font-size: 1.15rem !important;
   }
 
   p {

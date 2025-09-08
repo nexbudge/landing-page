@@ -9,7 +9,31 @@
     //# sourceURL=obs.inline.js</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="NexBudge - Un outil moderne, sécurisé et puissant pour gérer vos finances. Bientôt disponible !" />
+    content="NexBudge - Outil moderne de gestion de budget pour maîtriser vos finances personnelles. Interface intuitive, sécurisé et puissant pour votre épargne." />
+  <meta name="keywords"
+    content="gestion budget, budget personnel, finances, économies, dépenses, revenus, planification financière, outil budget, application budget, budget familial, suivi financier, épargne, NexBudge" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nexbudge.com/" />
+  <meta property="og:title" content="NexBudge - Gestion de budget moderne" />
+  <meta property="og:description"
+    content="Un nouvel outil de gestion de budget moderne, sécurisé et puissant pour maîtriser vos finances. Interface intuitive et fonctionnalités avancées." />
+  <meta property="og:image" content="https://nexbudge.com/assets/img/logo-nexbudge-blue.svg" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:site_name" content="NexBudge" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://nexbudge.com/" />
+  <meta name="twitter:title" content="NexBudge - Gestion de budget moderne" />
+  <meta name="twitter:description"
+    content="Un nouvel outil de gestion de budget moderne, sécurisé et puissant pour maîtriser vos finances. Interface intuitive et fonctionnalités avancées." />
+  <meta name="twitter:image" content="https://nexbudge.com/assets/img/logo-nexbudge-blue.svg" />
+
+  <!-- Image source -->
+  <meta name="image" content="https://nexbudge.com/assets/img/logo-nexbudge-blue.svg" />
+
   <link rel="manifest" href="/manifest.json" />
   <link rel="icon" href="assets/img/logo-nexbudge-blue-no-text.svg" type="image/svg+xml"
     media="(prefers-color-scheme: light)" />
@@ -24,37 +48,40 @@
   <link rel="preload" as="image" href="assets/img/logo-nexbudge-white.svg" />
   <link rel="preload" href="assets/css/style.css" as="style" />
   <link rel="stylesheet" href="assets/css/style.css" />
-  <title>NexBudge - Bientôt disponible</title>
+  <script src="assets/js/year.js" defer></script>
+  <script src="assets/js/register-sw.js" defer></script>
+  <title>NexBudge - Gestion de budget moderne</title>
 </head>
 
 <body>
   <header>
-    <a href="https://nexbudge.com" class="logo-link">
+    <a href="/" class="logo-link" title="NexBudge - Gestion de budget moderne">
       <img src="assets/img/logo-nexbudge-white.svg" alt="Logo NexBudge" class="logo logo-dark"
-        media="(prefers-color-scheme: dark)" width="350" height="100" loading="lazy" />
+        media="(prefers-color-scheme: dark)" width="350" height="100" loading="lazy"
+        title="NexBudge - Gestion de budget moderne" />
       <img src="assets/img/logo-nexbudge-blue.svg" alt="Logo NexBudge" class="logo logo-light"
-        media="(prefers-color-scheme: light)" width="350" height="100" loading="lazy" />
+        media="(prefers-color-scheme: light)" width="350" height="100" loading="lazy"
+        title="NexBudge - Gestion de budget moderne" />
     </a>
   </header>
   <main class="container">
-    <h1 class="headline">NexBudge arrive bientôt</h1>
-    <p class="description">Un nouvel outil de gestion de budget moderne, sécurisé et puissant pour maîtriser vos
-      finances.</p>
+    <h1 class="headline">NexBudge - Gestion de budget</h1>
+    <section class="description-section">
+      <h2>Bientôt disponible !</h2>
+      <p class="description">NexBudge est un nouvel outil de gestion de budget moderne, sécurisé et puissant pour
+        maîtriser vos
+        finances.<br />
+        Interface intuitive et fonctionnalités avancées.</p>
+    </section>
+    <br />
     <p class="info">
       Besoin d'informations ? Contactez-nous :<br />
-      <a href="mailto:contact@nexbudge.com" class="email">contact@nexbudge.com</a>
+      <a href="mailto:contact@nexbudge.com" class="email" title="Envoyer un email à NexBudge">contact@nexbudge.com</a>
     </p>
   </main>
   <footer>
-    <p>&copy; 2025 NexBudge. Tous droits réservés.</p>
-    <p>
-      Hébergé chez
-      <a href="https://www.infomaniak.com/fr/ecologie" target="_blank" rel="noopener noreferrer">
-        🌱 Infomaniak – 100 % énergie verte et datacenters écoconçus
-      </a>
-    </p>
+    <p>&copy; <span id="year">2025</span> NexBudge. Tous droits réservés.</p>
   </footer>
-  <script src="assets/js/register-sw.js" defer></script>
 </body>
 
 </html>
