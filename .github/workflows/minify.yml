@@ -29,6 +29,8 @@ jobs:
           mkdir -p dist/assets/js
           mkdir -p dist/assets/img
           mkdir -p dist/assets/fonts
+          mkdir -p dist/assets/css/errors
+          mkdir -p dist/errors
 
       - name: ✨ Minify HTML
         run: |
