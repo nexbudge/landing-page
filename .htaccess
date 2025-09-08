@@ -4,7 +4,9 @@
 <IfModule mod_headers.c>
 
   # ✅ Politique de sécurité du contenu (CSP) — sans Google Fonts
-  Header set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'nonce-obs-nonce-1'; img-src 'self' data:; object-src 'none'; base-uri 'self'; connect-src 'self'; frame-ancestors 'none';"
+  # Garantir une seule entête CSP et utiliser un nonce base64 valide
+  Header always unset Content-Security-Policy
+  Header always set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'nonce-b2JzLW5vbmNlLTE='; img-src 'self' data:; object-src 'none'; base-uri 'self'; connect-src 'self'; frame-ancestors 'none';"
 
   # ✅ Protection anti-MIME sniffing
   Header set X-Content-Type-Options "nosniff"
