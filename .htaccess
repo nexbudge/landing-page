@@ -38,7 +38,7 @@ Options -Indexes
 <IfModule mod_headers.c>
   # CSP stricte (pas de inline script, styles autorisés en inline)
   Header always unset Content-Security-Policy
-  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'sha256-0Vpi8SRbiTvzjTAXl2g+yVpxqbLy1oIAEtn/Pt7iFUQ=' 'sha256-DcHr571hCLcGQ136YAf1GrHn9eWCC9HeidsZ6JHhTU4='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'"
 
   # Divers durcissements
   Header always set X-Content-Type-Options "nosniff"
@@ -137,3 +137,12 @@ ErrorDocument 504 /errors/504.html
 #   RewriteCond %{REQUEST_FILENAME} !-d
 #   RewriteRule . /index.html [L]
 # </IfModule>
+
+# -------------------------------
+# Bloque l’accès aux dossiers d’erreurs
+# -------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_URI} ^/errors/
+  RewriteRule ^ - [R=404,L]
+</IfModule>

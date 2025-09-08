@@ -34,8 +34,9 @@ jobs:
 
       - name: ✨ Minify HTML
         run: |
+          # Keep inline JS untouched to preserve CSP hashes
           html-minifier-terser index.html -o dist/index.html \
-            --collapse-whitespace --remove-comments --minify-css true --minify-js true
+            --collapse-whitespace --remove-comments --minify-css true --minify-js false
           html-minifier-terser .infomaniak-maintenance.html -o dist/.infomaniak-maintenance.html \
             --collapse-whitespace --remove-comments --minify-css true --minify-js true
           html-minifier-terser errors/400.html -o dist/errors/400.html \
