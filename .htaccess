@@ -1,23 +1,55 @@
+# =========================================
+# .htaccess — NexBudge (Apache)
+# =========================================
+
+# -------------------------------
+# 🔒 Interdictions & durcissement
+# -------------------------------
+# Pas d’index de répertoire
+Options -Indexes
+
+# Bloque l’accès aux fichiers sensibles (dotfiles, git, env, conf, sql, bak, ini, log…)
+<FilesMatch "(^\.|\.env$|\.git|\.gitignore$|composer\.(json|lock)$|package(-lock)?\.json$|yarn\.lock$|pnpm-lock\.yaml$|webpack\.config\.js$|vite\.config\.(js|ts)$|.*\.(ini|conf|bak|old|sql|log))">
+  Require all denied
+</FilesMatch>
+
+# -------------------------------
+# 🔁 Redirections canoniques sûres
+# -------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Laisser passer ACME et le dossier d’erreurs (évite boucles et casse du HTTP-01)
+  RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+  RewriteCond %{REQUEST_URI} !^/errors/
+
+  # 1) Forcer HTTPS (ne pas utiliser [OR] ici)
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # 2) Forcer le domaine racine (adapter si besoin)
+  RewriteCond %{HTTP_HOST} !^nexbudge\.com$ [NC]
+  RewriteRule ^ https://nexbudge.com%{REQUEST_URI} [R=301,L]
+</IfModule>
+
 # -------------------------------
 # 🔐 Sécurité & Politiques HTTP
 # -------------------------------
 <IfModule mod_headers.c>
-  # CSP (aucun script inline, pas de nonce/hash)
+  # CSP stricte (pas de inline script, styles autorisés en inline)
   Header always unset Content-Security-Policy
   Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'"
 
-  # Sécurité complémentaires
+  # Divers durcissements
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
-
-  # CORP (complément utile si un jour COOP/COEP)
   Header always set Cross-Origin-Resource-Policy "same-origin"
 
-  # HSTS (prod uniquement ; nécessite HTTPS opérationnel)
-  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+  # HSTS uniquement en HTTPS (évite warnings côté HTTP)
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" "expr=%{HTTPS} == 'on'"
 
-  # Cache ciblé par type
+  # Caches ciblés par type d’actif
   <FilesMatch "\.html?$">
     Header set Cache-Control "no-store"
   </FilesMatch>
@@ -31,24 +63,11 @@
     Header set Cache-Control "public, max-age=15778463"
   </FilesMatch>
 
-  # Service Worker : autoriser le scope racine si souhaité
+  # Service Worker (si utilisé)
   <FilesMatch "register-sw\.js$">
     Header set Cache-Control "public, max-age=31536000, immutable"
     Header set Service-Worker-Allowed "/"
   </FilesMatch>
-</IfModule>
-
-# -------------------------------
-# 🔁 Canonical HTTPS + domaine
-# -------------------------------
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  # Laisser passer ACME pour Let's Encrypt
-  RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
-  # Redirection unique vers https://nexbudge.com
-  RewriteCond %{HTTPS} !=on [OR]
-  RewriteCond %{HTTP_HOST} !=nexbudge.com [NC]
-  RewriteRule ^ https://nexbudge.com%{REQUEST_URI} [R=301,L]
 </IfModule>
 
 # -------------------------------
@@ -59,34 +78,62 @@
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType text/css "access plus 6 months"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
 </IfModule>
 
 # -------------------------------
 # 🗜️ Compression (Brotli/Gzip)
 # -------------------------------
+# Brotli : seulement si brotli ET filter sont présents
 <IfModule mod_brotli.c>
-  BrotliCompressionQuality 5
-  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/javascript application/javascript application/json application/xml image/svg+xml font/woff2
+  <IfModule mod_filter.c>
+    BrotliCompressionQuality 5
+    AddOutputFilterByType BROTLI_COMPRESS \
+      text/html text/plain text/css text/javascript application/javascript \
+      application/json application/xml image/svg+xml
+    # (WOFF2 déjà compressé → inutile de le re-compresser)
+  </IfModule>
 </IfModule>
 
+# Gzip : seulement si deflate ET filter sont présents
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json application/xml image/svg+xml
-  # Évite double-compression
-  SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|mp4|woff2)$ no-gzip=1
+  <IfModule mod_filter.c>
+    AddOutputFilterByType DEFLATE \
+      text/html text/plain text/css text/javascript application/javascript \
+      application/json application/xml image/svg+xml
+    # Évite double-compression
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|mp4|woff2)$ no-gzip=1
+  </IfModule>
 </IfModule>
 
 # -------------------------------
-# 🚫 Erreurs personnalisées
+# 🚫 Pages d’erreurs personnalisées
 # -------------------------------
+# NE PAS définir 418 (non supporté sur ton hébergeur)
 ErrorDocument 400 /errors/400.html
 ErrorDocument 401 /errors/401.html
 ErrorDocument 403 /errors/403.html
 ErrorDocument 404 /errors/404.html
 ErrorDocument 405 /errors/405.html
 ErrorDocument 408 /errors/408.html
-ErrorDocument 418 /errors/418.html
+# ErrorDocument 418 /errors/418.html
 ErrorDocument 429 /errors/429.html
 ErrorDocument 500 /errors/500.html
 ErrorDocument 502 /errors/502.html
 ErrorDocument 503 /errors/503.html
 ErrorDocument 504 /errors/504.html
+
+# -------------------------------
+# (Optionnel) SPA fallback
+# -------------------------------
+# Décommente si tu as une SPA (et un index.html côté front)
+# Pense à exclure les assets existants pour éviter 404 déguisées.
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+#   RewriteCond %{REQUEST_URI} !^/errors/
+#   RewriteCond %{REQUEST_FILENAME} !-f
+#   RewriteCond %{REQUEST_FILENAME} !-d
+#   RewriteRule . /index.html [L]
+# </IfModule>
