@@ -1,6 +1,7 @@
 // Cache version is driven by the query string on the SW URL.
 // Example: /service-worker.js?v=<hash>
-const VERSION = new URL(self.location).searchParams.get("v") || "dev";
+// Use self.location.href to avoid any issues with WorkerLocation being passed to URL()
+const VERSION = new URL(self.location.href).searchParams.get("v") || "dev";
 const CACHE_NAME = `nexbudge-cache-${VERSION}`;
 
 const ASSETS_TO_CACHE = [
@@ -21,7 +22,21 @@ self.addEventListener("install", (event) => {
   // Activate the new SW immediately
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      await Promise.all(
+        ASSETS_TO_CACHE.map(async (url) => {
+          try {
+            const res = await fetch(url, { cache: "no-cache" });
+            if (res && res.ok) {
+              await cache.put(url, res.clone());
+            }
+          } catch (e) {
+            // Ignore individual failures to avoid aborting the install
+          }
+        })
+      );
+    })()
   );
 });
 

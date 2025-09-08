@@ -58,10 +58,41 @@
     }
   }
 
+  function withTimeout(promise, ms) {
+    let id;
+    const timeout = new Promise((_, rej) => {
+      id = setTimeout(() => rej(new Error(`timeout after ${ms}ms`)), ms);
+    });
+    return Promise.race([promise.finally(() => clearTimeout(id)), timeout]);
+  }
+
+  async function tryRegister(url) {
+    // use updateViaCache 'none' to avoid cached SW script during updates
+    return navigator.serviceWorker.register(url, { updateViaCache: "none" });
+  }
+
   async function register() {
     const version = await computeVersion();
-    const swUrl = `/service-worker.js?v=${version}`;
-    const reg = await navigator.serviceWorker.register(swUrl);
+    const withQuery = `/service-worker.js?v=${version}`;
+    let reg;
+    try {
+      reg = await withTimeout(tryRegister(withQuery), 8000);
+    } catch (e1) {
+      console.warn(
+        "SW register with query failed, retrying without query...",
+        e1
+      );
+      try {
+        // fallback: no query param
+        reg = await withTimeout(tryRegister("/service-worker.js"), 8000);
+      } catch (e2) {
+        console.error(
+          "Échec de l'enregistrement du Service Worker (fallback):",
+          e2
+        );
+        throw e2;
+      }
+    }
 
     // Trigger update check and handle waiting workers
     if (reg.waiting) {
@@ -76,7 +107,10 @@
         }
       });
     });
-    reg.update();
+    // Force an update check; guard errors so it doesn't crash
+    try {
+      reg.update();
+    } catch {}
 
     // Reload the page when the new SW takes control (avoid first install reload)
     let refreshing = false;
