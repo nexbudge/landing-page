@@ -38,7 +38,7 @@ Options -Indexes
 <IfModule mod_headers.c>
   # CSP stricte (pas de inline script, styles autorisés en inline)
   Header always unset Content-Security-Policy
-  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'nonce-bmV4YnVkZ2Utb2JzLWlubGluZS0yMDI1' 'sha256-0Vpi8SRbiTvzjTAXl2g+yVpxqbLy1oIAEtn/Pt7iFUQ=' 'sha256-DcHr571hCLcGQ136YAf1GrHn9eWCC9HeidsZ6JHhTU4='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'"
 
   # Divers durcissements
   Header always set X-Content-Type-Options "nosniff"
