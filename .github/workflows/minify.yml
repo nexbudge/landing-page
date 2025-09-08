@@ -101,6 +101,8 @@ jobs:
           cp .user.ini dist/
           cp .htaccess dist/ || true
           cp .infomaniak-maintenance.html dist/ || true
+          cp assets/js/obs.min.js dist/assets/js/ || true
+          cp assets/js/obs-config.js dist/assets/js/ || true
           cp -r assets/fonts dist/assets/
 
       - name: 📂 Sync files via FTP
