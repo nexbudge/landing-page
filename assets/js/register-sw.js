@@ -1,11 +1,6 @@
 (function () {
   if (!("serviceWorker" in navigator)) return;
 
-  const isAudit =
-    /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent) ||
-    navigator.webdriver === true;
-  if (isAudit) return;
-
   async function canFetchSW() {
     try {
       const res = await fetch("/service-worker.js", {

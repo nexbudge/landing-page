@@ -83,7 +83,6 @@ jobs:
           terser service-worker.js -o dist/service-worker.js --compress --mangle
           terser assets/js/year.js -o dist/assets/js/year.js --compress --mangle
           terser assets/js/obs-config.js -o dist/assets/js/obs-config.js --compress --mangle
-          terser assets/js/audit.js -o dist/assets/js/audit.js --compress --mangle
 
       - name: ✨ Minify JSON
         run: |
