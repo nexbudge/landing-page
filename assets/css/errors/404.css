@@ -22,16 +22,29 @@
   }
 }
 
-* { box-sizing: border-box; }
-html, body { height: 100%; }
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
 body {
   margin: 0;
   color: var(--fg);
-  background:
-    radial-gradient(800px 300px at 10% -10%, rgba(59, 130, 246, 0.18) 0%, transparent 70%),
-    radial-gradient(600px 250px at 90% 0%, rgba(6, 182, 212, 0.16) 0%, transparent 65%),
+  background: radial-gradient(
+      800px 300px at 10% -10%,
+      rgba(59, 130, 246, 0.18) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      600px 250px at 90% 0%,
+      rgba(6, 182, 212, 0.16) 0%,
+      transparent 65%
+    ),
     linear-gradient(180deg, var(--bg), var(--bg2));
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -43,14 +56,30 @@ body {
   padding: 32px 16px;
 }
 
-.brand { position: fixed; top: 20px; left: 20px; }
-.logo { height: 40px; width: auto; display: block; }
-.logo-dark { display: none; }
-.logo-light { display: block; }
+.brand {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+}
+.logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+.logo-dark {
+  display: none;
+}
+.logo-light {
+  display: block;
+}
 
 @media (prefers-color-scheme: dark) {
-  .logo-dark { display: block; }
-  .logo-light { display: none; }
+  .logo-dark {
+    display: block;
+  }
+  .logo-light {
+    display: none;
+  }
 }
 
 .card {
@@ -89,36 +118,78 @@ h1 {
   font-size: clamp(15px, 2.8vw, 18px);
 }
 
-.actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 .btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 12px 18px; border-radius: 999px; border: 1px solid transparent;
-  font-weight: 600; text-decoration: none; cursor: pointer;
-  transition: transform 0.18s ease, filter 0.18s ease, background-color 0.2s ease, border-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, filter 0.18s ease,
+    background-color 0.2s ease, border-color 0.2s ease;
 }
 .btn.primary {
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   color: #ffffff;
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.28);
 }
-.btn.primary:hover { transform: translateY(-1px); filter: brightness(1.05); }
-.btn.primary:active { transform: translateY(0); filter: brightness(0.98); }
-.btn.ghost { background: transparent; color: var(--fg); border-color: var(--border); }
-.btn.ghost:hover { border-color: rgba(59, 130, 246, 0.6); }
+.btn.primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+.btn.primary:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--fg);
+  border-color: var(--border);
+}
+.btn.ghost:hover {
+  border-color: rgba(59, 130, 246, 0.6);
+}
 
 .footer {
-  position: fixed; bottom: 12px; left: 0; right: 0;
-  display: grid; place-items: center;
-  color: var(--muted); font-size: 13px; pointer-events: none;
+  position: fixed;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 13px;
+  pointer-events: none;
 }
 
 @media (max-width: 480px) {
-  .brand { top: 14px; left: 14px; }
-  .logo { height: 32px; }
-  .card { padding: 28px 20px; border-radius: 14px; }
+  .brand {
+    top: 14px;
+    left: 14px;
+  }
+  .logo {
+    height: 32px;
+  }
+  .card {
+    padding: 28px 20px;
+    border-radius: 14px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
-

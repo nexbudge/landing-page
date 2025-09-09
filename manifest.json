@@ -1,4 +1,5 @@
 {
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
     "name": "NexBudge - Gestion de budget moderne",
     "short_name": "NexBudge",
     "description": "Un nouvel outil de gestion de budget moderne, sécurisé et puissant pour maîtriser vos finances. Interface intuitive et fonctionnalités avancées.",

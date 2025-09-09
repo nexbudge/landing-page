@@ -99,6 +99,7 @@ jobs:
       - name: 📥 Copy other files
         run: |
           cp robots.txt dist/
+          cp sitemap.xml dist/
           cp .user.ini dist/
           cp .htaccess dist/ || true
           cp -r assets/fonts dist/assets/
