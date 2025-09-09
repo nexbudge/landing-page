@@ -49,14 +49,11 @@
     media="(prefers-color-scheme: dark)" />
   <link rel="preload" href="assets/fonts/montserrat-v30-latin-regular.woff2" as="font" type="font/woff2"
     crossorigin="anonymous" />
-  <link rel="preload" href="assets/fonts/montserrat-v30-latin-500.woff2" as="font" type="font/woff2"
-    crossorigin="anonymous" />
   <link rel="preload" href="assets/fonts/montserrat-v30-latin-700.woff2" as="font" type="font/woff2"
     crossorigin="anonymous" />
   <link rel="preload" as="image" href="assets/img/logo-nexbudge-white.svg" />
   <link rel="preload" href="assets/css/style.css" as="style" />
   <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="assets/js/year.js" defer></script>
   <!-- Versionnement pour forcer la prise en compte du nouveau registre SW -->
   <script src="assets/js/register-sw.js" defer></script>
   <title>NexBudge - Gestion de budget moderne</title>
@@ -87,9 +84,11 @@
       <a href="mailto:contact@nexbudge.com" class="email" title="Envoyer un email à NexBudge">contact@nexbudge.com</a>
     </p>
   </main>
-  <footer>
+  <footer class="footer">
     <p>&copy; <span id="year">2025</span> NexBudge. Tous droits réservés.</p>
   </footer>
+  <script>const yearSpan = document.getElementById("year"), currentYear = (new Date).getFullYear(); yearSpan.textContent = 2025 === currentYear ? currentYear : `2025 - ${currentYear}`;</script>
+
 </body>
 
 </html>

@@ -11,19 +11,6 @@ AddType application/javascript .mjs
   Header set X-Content-Type-Options "nosniff"
 </IfModule>
 
-# Service Worker must be fetched with a 200 OK, correct JS MIME, and without redirects.
-# Also avoid aggressive caching to let the browser check for updates.
-<Files "service-worker.js">
-  <IfModule mod_headers.c>
-    Header set Content-Type "application/javascript; charset=utf-8"
-    Header set Cache-Control "no-store, must-revalidate"
-    Header unset Pragma
-    Header set Expires "0"
-    # Allow full scope from the site root (not strictly necessary since SW is at "/")
-    Header set Service-Worker-Allowed "/"
-  </IfModule>
-</Files>
-
 # If you add SPA rewrites later, make sure to EXCLUDE the SW and other static assets, e.g.:
 #
 # RewriteEngine On
@@ -106,7 +93,8 @@ Options -Indexes
 
   # Caches ciblés par type d’actif
   <FilesMatch "\.html?$">
-    Header set Cache-Control "no-store, must-revalidate"
+    # Autorise le back/forward cache (bfcache) : éviter no-store sur HTML
+    Header set Cache-Control "max-age=0, must-revalidate"
   </FilesMatch>
   <FilesMatch "\.js$">
     Header set Cache-Control "public, max-age=31536000, immutable"

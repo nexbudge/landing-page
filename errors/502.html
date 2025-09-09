@@ -10,7 +10,6 @@
   <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
   <link rel="stylesheet" href="/assets/css/errors/502.css">
-  <script src="/assets/js/year.js" defer></script>
   <link rel="icon" href="/assets/img/logo-nexbudge-blue-no-text.svg" type="image/svg+xml"
     media="(prefers-color-scheme: light)">
   <link rel="icon" href="/assets/img/logo-nexbudge-white-no-text.svg" type="image/svg+xml"
@@ -41,6 +40,7 @@
   <footer class="footer">
     <p>&copy; <span id="year">2025</span> NexBudge. Tous droits réservés.</p>
   </footer>
+  <script>const yearSpan = document.getElementById("year"), currentYear = (new Date).getFullYear(); yearSpan.textContent = 2025 === currentYear ? currentYear : `2025 - ${currentYear}`;</script>
 
 </body>
 
