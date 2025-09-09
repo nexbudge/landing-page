@@ -39,12 +39,15 @@ Options -Indexes
   RewriteCond %{HTTP_HOST} !^nexbudge\.com$ [NC]
   RewriteRule ^ https://nexbudge.com%{REQUEST_URI} [R=301,L]
 
-  # (Si tu as un routeur SPA type "tout vers /index.html", place-le APRÈS,
-  # mais garde l'exclusion ci-dessus pour service-worker.js/robots/sitemap/manifest)
-  # Exemple (décommenter si besoin) :
-  # RewriteCond %{REQUEST_FILENAME} !-f
-  # RewriteCond %{REQUEST_FILENAME} !-d
-  # RewriteRule . /index.html [L]
+  # Rediriger les URLs avec .html vers la version sans extension
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+  
+  # Ajouter .html en interne pour les fichiers qui existent
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.*)$ $1.html [L]
 </IfModule>
 
 # -------------------------------
