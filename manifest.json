@@ -1,27 +1,32 @@
 {
-    "name": "NexBudge",
+    "name": "NexBudge - Gestion de budget moderne",
     "short_name": "NexBudge",
-    "description": "NexBudge - Une application moderne pour la gestion de vos budgets.",
+    "description": "Un nouvel outil de gestion de budget moderne, sécurisé et puissant pour maîtriser vos finances. Interface intuitive et fonctionnalités avancées.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#1e3c72",
-    "theme_color": "#2a5298",
+    "background_color": "#2a5298",
+    "theme_color": "#1e3c72",
     "orientation": "portrait",
     "scope": "/",
     "lang": "fr",
     "icons": [
         {
-            "src": "assets/img/logo-nexbudge-blue.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        },
-        {
-            "src": "assets/img/logo-nexbudge-blue-transparent.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        },
-        {
             "src": "assets/img/logo-nexbudge-blue.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "assets/img/logo-nexbudge-white.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "assets/img/logo-nexbudge-blue-no-text.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "assets/img/logo-nexbudge-white-no-text.svg",
             "sizes": "any",
             "type": "image/svg+xml"
         }
