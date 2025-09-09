@@ -6,26 +6,30 @@
   const SW_VERSION =
     __SWV_PLACEHOLDER__ === "__SW_VERSION__" ? "" : __SWV_PLACEHOLDER__;
 
-  function getSWUrl() {
-    return SW_VERSION
-      ? `/service-worker.js?v=${encodeURIComponent(SW_VERSION)}`
-      : "/service-worker.js";
+  function getCandidateSWUrls() {
+    const urls = [];
+    if (SW_VERSION) {
+      urls.push(`/service-worker.js?v=${encodeURIComponent(SW_VERSION)}`);
+    }
+    urls.push("/service-worker.js");
+    return urls;
   }
 
   async function canFetchSW() {
-    const url = getSWUrl();
-    try {
-      const res = await fetch(url, {
-        cache: "no-store",
-        redirect: "manual",
-      });
-      // Redirects are not allowed for SW scripts; ensure 200 OK and a JavaScript content-type
-      const type = (res.headers.get("content-type") || "").toLowerCase();
-      const isJS = type.includes("javascript");
-      return res.status === 200 && res.type === "basic" && isJS;
-    } catch (_) {
-      return false;
+    const candidates = getCandidateSWUrls();
+    for (const url of candidates) {
+      try {
+        const res = await fetch(url, { cache: "no-store", redirect: "manual" });
+        const type = (res.headers.get("content-type") || "").toLowerCase();
+        const isJS = type.includes("javascript");
+        if (res.status === 200 && res.type === "basic" && isJS) {
+          return url;
+        }
+      } catch (_) {
+        // try next candidate
+      }
     }
+    return null;
   }
 
   async function cleanupLegacyRegistrations() {
@@ -73,12 +77,13 @@
 
   async function register() {
     let reg;
+    let chosenUrl = null;
     try {
       // Nettoie d'abord les anciens SW basés sur des URLs avec paramètres (ex: ?v=...)
       await cleanupLegacyRegistrations();
       // Vérifie que le SW (versionné si dispo) est accessible sans redirection et avec le bon type MIME
-      const ok = await canFetchSW();
-      if (!ok) {
+      const url = await canFetchSW();
+      if (!url) {
         console.warn(
           "Service Worker non enregistré: script inaccessible (redirection, type MIME, ou statut ≠ 200)."
         );
@@ -93,8 +98,9 @@
         } catch {}
         return;
       }
-      // Enregistrer en utilisant l'URL versionnée si disponible
-      reg = await withTimeout(tryRegister(getSWUrl()), 8000);
+      chosenUrl = url;
+      // Enregistrer en utilisant l'URL validée (versionnée si dispo, sinon fallback)
+      reg = await withTimeout(tryRegister(chosenUrl), 8000);
     } catch (e) {
       // Reste silencieux côté 'error' pour ne pas pénaliser l'audit Lighthouse
       console.warn(

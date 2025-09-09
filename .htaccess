@@ -1,3 +1,39 @@
+# Security and defaults
+Options -Indexes -MultiViews
+ServerSignature Off
+
+# Ensure correct MIME for JavaScript
+AddType application/javascript .js
+AddType application/javascript .mjs
+
+# Strongly suggest browsers not to sniff types
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Service Worker must be fetched with a 200 OK, correct JS MIME, and without redirects.
+# Also avoid aggressive caching to let the browser check for updates.
+<Files "service-worker.js">
+  <IfModule mod_headers.c>
+    Header set Content-Type "application/javascript; charset=utf-8"
+    Header set Cache-Control "no-store, must-revalidate"
+    Header unset Pragma
+    Header set Expires "0"
+    # Allow full scope from the site root (not strictly necessary since SW is at "/")
+    Header set Service-Worker-Allowed "/"
+  </IfModule>
+</Files>
+
+# If you add SPA rewrites later, make sure to EXCLUDE the SW and other static assets, e.g.:
+#
+# RewriteEngine On
+# # Do NOT rewrite these files
+# RewriteCond %{REQUEST_URI} ^/(service-worker\.js|manifest\.json|robots\.txt|sitemap\.xml)$ [OR]
+# RewriteCond %{REQUEST_URI} ^/assets/ [OR]
+# RewriteCond %{REQUEST_URI} ^/errors/
+# RewriteRule ^ - [L]
+# # Example SPA fallback
+# RewriteRule ^ index.html [L]
 # =========================================
 # .htaccess — NexBudge (Apache)
 # =========================================
