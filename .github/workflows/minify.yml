@@ -82,7 +82,6 @@ jobs:
           terser assets/js/register-sw.js -o dist/assets/js/register-sw.js --compress --mangle
           terser service-worker.js -o dist/service-worker.js --compress --mangle
           terser assets/js/year.js -o dist/assets/js/year.js --compress --mangle
-          terser assets/js/obs-config.js -o dist/assets/js/obs-config.js --compress --mangle
 
       - name: ✨ Minify JSON
         run: |
