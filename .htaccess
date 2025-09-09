@@ -84,7 +84,8 @@ Options -Indexes
 
   # Service Worker (fichier d'enregistrement côté page)
   <FilesMatch "register-sw\.js$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
+    Header unset Cache-Control
+    Header set Cache-Control "no-cache, must-revalidate"
     Header set Service-Worker-Allowed "/"
   </FilesMatch>
 

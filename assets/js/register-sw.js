@@ -1,9 +1,21 @@
 (function () {
   if (!("serviceWorker" in navigator)) return;
 
+  // Placeholder remplacé en CI par le hash du SW, sinon fallback "" (pas de query)
+  const __SWV_PLACEHOLDER__ = "__SW_VERSION__";
+  const SW_VERSION =
+    __SWV_PLACEHOLDER__ === "__SW_VERSION__" ? "" : __SWV_PLACEHOLDER__;
+
+  function getSWUrl() {
+    return SW_VERSION
+      ? `/service-worker.js?v=${encodeURIComponent(SW_VERSION)}`
+      : "/service-worker.js";
+  }
+
   async function canFetchSW() {
+    const url = getSWUrl();
     try {
-      const res = await fetch("/service-worker.js", {
+      const res = await fetch(url, {
         cache: "no-store",
         redirect: "manual",
       });
@@ -26,10 +38,16 @@
             reg.waiting?.scriptURL,
             reg.installing?.scriptURL,
           ].filter(Boolean);
-          const hasQuery = urls.some(
-            (u) => typeof u === "string" && u.includes("?")
-          );
-          if (hasQuery) {
+          // Ne plus désinscrire si l'URL contient notre version (?v=...),
+          // mais nettoyer d'anciens patterns avec autre chose que ?v=
+          const legacyQuery = urls.some((u) => {
+            if (typeof u !== "string") return false;
+            const idx = u.indexOf("?");
+            if (idx === -1) return false;
+            const q = u.slice(idx + 1);
+            return !/^(?:|.*&)v=/.test(q); // pas de paramètre v= → legacy
+          });
+          if (legacyQuery) {
             await reg.unregister();
           }
         })
@@ -47,7 +65,10 @@
 
   async function tryRegister(url) {
     // use updateViaCache 'none' to avoid cached SW script during updates
-    return navigator.serviceWorker.register(url, { updateViaCache: "none" });
+    return navigator.serviceWorker.register(url, {
+      updateViaCache: "none",
+      scope: "/",
+    });
   }
 
   async function register() {
@@ -55,7 +76,7 @@
     try {
       // Nettoie d'abord les anciens SW basés sur des URLs avec paramètres (ex: ?v=...)
       await cleanupLegacyRegistrations();
-      // Vérifie que le SW est accessible sans redirection et avec le bon type MIME
+      // Vérifie que le SW (versionné si dispo) est accessible sans redirection et avec le bon type MIME
       const ok = await canFetchSW();
       if (!ok) {
         console.warn(
@@ -72,8 +93,8 @@
         } catch {}
         return;
       }
-      // Toujours enregistrer sans paramètre de version pour éviter tout redirect/fetch particulier
-      reg = await withTimeout(tryRegister("/service-worker.js"), 8000);
+      // Enregistrer en utilisant l'URL versionnée si disponible
+      reg = await withTimeout(tryRegister(getSWUrl()), 8000);
     } catch (e) {
       // Reste silencieux côté 'error' pour ne pas pénaliser l'audit Lighthouse
       console.warn(

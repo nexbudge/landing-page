@@ -68,6 +68,11 @@ jobs:
             cleancss -o dist/assets/css/errors/400.css assets/css/errors/400.css
             cleancss -o dist/assets/css/errors/401.css assets/css/errors/401.css
             cleancss -o dist/assets/css/errors/403.css assets/css/errors/403.css
+
+      - name: 🏷️ Inject build version into register-sw.js
+        run: |
+          BUILD_HASH=$(git rev-parse --short HEAD)
+          sed -i "s/__SW_VERSION__/${BUILD_HASH}/g" dist/assets/js/register-sw.js
             cleancss -o dist/assets/css/errors/404.css assets/css/errors/404.css
             cleancss -o dist/assets/css/errors/405.css assets/css/errors/405.css
             cleancss -o dist/assets/css/errors/408.css assets/css/errors/408.css
